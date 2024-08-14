@@ -1,7 +1,7 @@
 // Navbar.jsx
 import React, { useState } from "react";
 import styled from "styled-components";
-import LogoImage from "../assets/RESUMATE.png";
+import LogoImage from "../assets/logo3.png";
 import { HiMenuAlt1 } from "react-icons/hi";
 
 const Nav = styled.nav`
@@ -41,7 +41,6 @@ const MenuItems = styled.div`
     padding: 1rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     align-items: center;
-    background-color: black;
   }
 `;
 
@@ -61,11 +60,11 @@ const MenuItem = styled.a`
     display: ${({ active }) => (active ? "block" : "none")};
 
     width: ${({ active }) => (active ? "100%" : "0%")};
+    border-radius: 2px;
   }
 
   @media (max-width: 1200px) {
     margin: 1rem 0;
-    color: white;
   }
 `;
 
@@ -73,7 +72,7 @@ const MenuBtn = styled.div`
   display: flex;
   column-gap: 10px;
   margin: 0 0 0 100px;
-  @media (max-width: 1000px) {
+  @media (max-width: 1200px) {
     flex-direction: column;
     row-gap: 10px;
     margin: 0;
@@ -127,7 +126,7 @@ const Navbar = () => {
       </HamburgerButton>
       <MenuItems isOpen={isMenuOpen}>
         <MenuItem
-          href="#"
+          href="/"
           active={activePage === "Home"}
           onClick={() => setActivePage("Home")}
         >
@@ -141,7 +140,7 @@ const Navbar = () => {
           Resume Build
         </MenuItem>
         <MenuItem
-          href="#"
+          href="/ats/resume"
           active={activePage === "ATS Score"}
           onClick={() => setActivePage("ATS Score")}
         >
