@@ -4,7 +4,7 @@ import styled from "styled-components";
 const Button = styled.button`
   position: relative;
   overflow: hidden;
-  height: 2.1rem;
+  height: 2rem;
   padding: 0 2rem;
   border-radius: 1.5rem;
   background: ${({ bgColor }) => bgColor || "#3d3a4e"};
