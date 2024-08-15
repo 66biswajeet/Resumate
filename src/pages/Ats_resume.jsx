@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Navbtn from "../components/Navbtn";
 
+import { Link } from "react-router-dom";
+
 // icon imports
 
 import { IoDocumentTextSharp } from "react-icons/io5";
@@ -24,24 +26,29 @@ const Ats_resume = () => {
   return (
     <Container>
       <Sidebar>
-        <SidebarItem
-          active={activePage === "Resume"}
-          onClick={() => setActivePage("Resume")}
-        >
-          <Icon>
-            <IoDocumentTextSharp />
-          </Icon>
-          Resume
-        </SidebarItem>
-        <SidebarItem
-          active={activePage === "Score"}
-          onClick={() => setActivePage("Score")}
-        >
-          <Icon>
-            <IoBarChart />
-          </Icon>
-          Score
-        </SidebarItem>
+        <Link to={"/ats/resume"} style={{ textDecoration: "none" }}>
+          <SidebarItem
+            active={activePage === "Resume"}
+            onClick={() => setActivePage("Resume")}
+          >
+            <Icon>
+              <IoDocumentTextSharp />
+            </Icon>
+            Resume
+          </SidebarItem>
+        </Link>
+        <Link to={"/ats/score"} style={{ textDecoration: "none" }}>
+          <SidebarItem
+            href="/ats/score"
+            active={activePage === "Score"}
+            onClick={() => setActivePage("Score")}
+          >
+            <Icon>
+              <IoBarChart />
+            </Icon>
+            Score
+          </SidebarItem>
+        </Link>
         <SidebarItem
           active={activePage === "Settings"}
           onClick={() => setActivePage("Settings")}
@@ -135,6 +142,7 @@ const SidebarItem = styled.div`
   border-radius: 5px;
   /* color: ${({ active }) => (active ? "white" : "var(--primary-color)")}; */
   color: var(--primary-color);
+  text-decoration: none;
   @media (max-width: 768px) {
     justify-content: center;
   }
