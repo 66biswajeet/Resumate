@@ -5,6 +5,7 @@ const Button = styled.button`
   position: relative;
   overflow: hidden;
   height: 2.22rem;
+
   padding: 0 2rem;
   border-radius: 1.5rem;
   background: ${({ bgColor }) => bgColor || "#3d3a4e"};
@@ -43,6 +44,7 @@ const Navbtn = ({ text, textColor, bgColor, gradient }) => {
   return (
     <Button bgColor={bgColor} textColor={textColor} gradient={gradient}>
       <ButtonContent>{text}</ButtonContent>
+      {/* comment */}
     </Button>
   );
 };
