@@ -1,8 +1,12 @@
 import React, { useState } from "react";
+
 import styled from "styled-components";
-import Navbtn from "../components/Navbtn";
 
 import { Link } from "react-router-dom";
+
+import pdfToText from "react-pdftotext";
+
+import { useResumeExtract } from "../systems/useResumeExtract";
 
 // icon imports
 
@@ -12,12 +16,15 @@ import { IoMdSettings } from "react-icons/io";
 
 const Ats_resume = () => {
   const [isUploadOpen, setIsUploadOpen] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
+
   const [activePage, setActivePage] = useState("Resume");
 
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
+  const { prompt2, selectedFile, extractText } = useResumeExtract();
+
+  // prompt1 = job description and prompt2 = resume text
+
+  // on upload button click the pop of will shown
+
   const handleUploadClick = () => {
     console.log("Upload button clicked");
     setIsUploadOpen(true);
@@ -66,8 +73,11 @@ const Ats_resume = () => {
           compatibility & get your GAP Report in just 3 minutes. This is your
           chance to get 2X more interview calls.
         </Subtitle>
-
-        <UploadButton onClick={handleUploadClick}>Upload</UploadButton>
+        <JobDescriptionInput
+          placeholder="Paste the job description here..."
+          onChange={(e) => setJobDescription(e.target.value)}
+        />
+        <UploadButton onClick={handleUploadClick}>Upload Resume</UploadButton>
 
         {isUploadOpen && (
           <UploadModal>
@@ -81,14 +91,14 @@ const Ats_resume = () => {
               <UploadArea>
                 <UploadIcon>⬆️</UploadIcon>
                 <p>Drop files here</p>
-                <SupportedFormats>Supported format: PNG, JPG</SupportedFormats>
+                <SupportedFormats>Supported format: Pdf </SupportedFormats>
                 <OrDivider>OR</OrDivider>
                 <BrowseButton htmlFor="fileInput">Browse</BrowseButton>
                 <input
                   type="file"
                   id="fileInput"
                   style={{ display: "none" }}
-                  onChange={handleFileChange}
+                  onChange={extractText}
                 />
                 {selectedFile && <p> {selectedFile.name}</p>} 
               </UploadArea>
@@ -96,7 +106,9 @@ const Ats_resume = () => {
                 <CancelButton onClick={() => setIsUploadOpen(false)}>
                   Cancel
                 </CancelButton>
-                <UploadButton>Upload</UploadButton>
+                <Link to={"/ats/score"}>
+                  <UploadButton>Check ATS</UploadButton>
+                </Link>
               </ModalFooter>
             </ModalContent>
           </UploadModal>
@@ -118,16 +130,17 @@ const Container = styled.div`
 `;
 
 const Sidebar = styled.div`
-  width: 200px;
-
+  width: 150px;
+  background-color: white;
   color: var(--primary-color);
   padding: 20px;
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
+  margin-top: 50px;
 
   @media (max-width: 1200px) {
     flex-direction: row;
+    top: 0;
   }
 `;
 
@@ -183,6 +196,9 @@ const Title = styled.h1`
 const Subtitle = styled.p`
   color: var(--third-color);
   max-width: 70%;
+  font-size: 15px;
+  text-align: center;
+  margin-bottom: 30px;
   @media (max-width: 1200px) {
     max-width: 90%;
   }
@@ -276,6 +292,32 @@ const UploadButton = styled(Button)`
   background-color: var(--primary-color);
   color: white;
   margin-top: 20px;
+`;
+const JobDescriptionInput = styled.textarea`
+  width: 100%;
+  max-width: 600px;
+  height: 150px;
+  padding: 12px;
+  border: 2px solid var(--primary-color);
+  border-radius: 8px;
+  font-size: 16px;
+  resize: vertical;
+  margin-bottom: 20px;
+  transition: border-color 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 2px rgba(var(--secondary-color-rgb), 0.2);
+  }
+
+  &::placeholder {
+    color: #aaa;
+  }
+
+  @media (max-width: 1000px) {
+    width: 95%;
+  }
 `;
 
 export default Ats_resume;
