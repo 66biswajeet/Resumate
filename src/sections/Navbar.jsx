@@ -63,7 +63,15 @@ const MenuItem = styled.a`
     content: "";
 
     height: 4px;
-    background-color: var(--secondary-color);
+    background: linear-gradient(
+      to right,
+      var(--primary-color) 0%,
+      var(--primary-color) 33.33%,
+      var(--third-color) 33.33%,
+      var(--third-color) 66.66%,
+      var(--fifth-color) 66.66%,
+      var(--fifth-color) 100%
+    );
     position: absolute;
     display: ${({ active }) => (active ? "block" : "none")};
 
@@ -121,15 +129,17 @@ const Button = styled.button`
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activePage, setActivePage] = useState("Home");
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
   const location = useLocation();
-  const isActive = (path) => {
-    return location.pathname === path;
+  const isActive = (paths) => {
+    if (Array.isArray(paths)) {
+      return paths.some((path) => location.pathname.startsWith(path));
+    }
+    return location.pathname === paths;
   };
 
   return (
@@ -151,7 +161,11 @@ const Navbar = () => {
         >
           Resume Build
         </MenuItem>
-        <MenuItem as={Link} to="/ats/resume" active={isActive("/ats/resume")}>
+        <MenuItem
+          as={Link}
+          to="/ats/resume"
+          active={isActive(["/ats/resume", "/ats/score"])}
+        >
           ATS Score
         </MenuItem>
         <MenuItem

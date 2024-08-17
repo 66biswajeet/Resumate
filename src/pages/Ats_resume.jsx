@@ -4,12 +4,15 @@ import styled from "styled-components";
 
 import { Link } from "react-router-dom";
 
-import pdfToText from "react-pdftotext";
-
+// use here for file name to show on the popup //
 import { useResumeExtract } from "../systems/useResumeExtract";
+import { useJdContext } from "../systems/JdContext";
+
+// section & components imports  //
+import JobDescription from "../sections/JobDescription";
+import Navbtn from "../components/Navbtn";
 
 // icon imports
-
 import { IoDocumentTextSharp } from "react-icons/io5";
 import { IoBarChart } from "react-icons/io5";
 import { IoMdSettings } from "react-icons/io";
@@ -19,12 +22,12 @@ const Ats_resume = () => {
 
   const [activePage, setActivePage] = useState("Resume");
 
-  const { prompt2, selectedFile, extractText } = useResumeExtract();
+  const { selectedFile, extractText } = useResumeExtract();
+  const { prompt1, setPrompt1 } = useJdContext();
 
   // prompt1 = job description and prompt2 = resume text
 
-  // on upload button click the pop of will shown
-
+  // on upload button click the popup will shown
   const handleUploadClick = () => {
     console.log("Upload button clicked");
     setIsUploadOpen(true);
@@ -73,12 +76,14 @@ const Ats_resume = () => {
           compatibility & get your GAP Report in just 3 minutes. This is your
           chance to get 2X more interview calls.
         </Subtitle>
-        <JobDescriptionInput
-          placeholder="Paste the job description here..."
-          onChange={(e) => setJobDescription(e.target.value)}
+        <JobDescription
+          value={prompt1}
+          onChange={(e) => setPrompt1(e.target.value)}
         />
-        <UploadButton onClick={handleUploadClick}>Upload Resume</UploadButton>
 
+        <div onClick={handleUploadClick}>
+          <Navbtn text={"Upload Resume"}> </Navbtn>
+        </div>
         {isUploadOpen && (
           <UploadModal>
             <ModalContent>
@@ -118,11 +123,20 @@ const Ats_resume = () => {
   );
 };
 
+//.............................// styling section //..........................//
 const Container = styled.div`
-  display: flex;
+  /* display: flex;
   min-height: 80vh;
   font-family: Arial, sans-serif;
   justify-content: center;
+  margin: auto;
+  @media (max-width: 1200px) {
+    flex-direction: column;
+  } */
+  display: flex;
+  min-height: 80vh;
+  font-family: Arial, sans-serif;
+
   margin: auto;
   @media (max-width: 1200px) {
     flex-direction: column;
@@ -130,7 +144,7 @@ const Container = styled.div`
 `;
 
 const Sidebar = styled.div`
-  width: 150px;
+  /* width: 150px;
   background-color: white;
   color: var(--primary-color);
   padding: 20px;
@@ -141,6 +155,25 @@ const Sidebar = styled.div`
   @media (max-width: 1200px) {
     flex-direction: row;
     top: 0;
+    width: 85%;
+    left: 0px;
+  } */
+  width: 150px;
+  background-color: white;
+  color: var(--primary-color);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+  position: fixed;
+  left: 60px;
+  z-index: 100;
+
+  @media (max-width: 1200px) {
+    flex-direction: row;
+    top: 0;
+    width: 100%;
+    left: 0px;
   }
 `;
 
@@ -153,7 +186,6 @@ const SidebarItem = styled.div`
   background-color: ${({ active }) =>
     active ? "var(--fifth-color)" : "transparent"};
   border-radius: 5px;
-  /* color: ${({ active }) => (active ? "white" : "var(--primary-color)")}; */
   color: var(--primary-color);
   text-decoration: none;
   @media (max-width: 768px) {
@@ -172,24 +204,51 @@ const Icon = styled.span`
 const MainContent = styled.div`
   display: flex;
   flex-direction: column;
+  margin-top: 50px;
+  margin-left: 200px;
+  margin-right: auto;
+  width: 80%;
+  align-items: center;
+  padding: 30px;
 
-  align-items: center;
-  padding: 20px;
-  max-width: 80vw;
-  align-items: center;
   justify-content: center;
+  scale: 1;
 
   @media (max-width: 1200px) {
     max-width: 100%;
     align-items: flex-start;
+    margin-left: auto;
+    margin-top: 100px;
   }
 `;
 
 const Title = styled.h1`
   color: var(--primary-color);
   font-weight: 900;
+  position: relative;
+  padding-bottom: 10px;
   @media (max-width: 1200px) {
     font-size: 30px;
+  }
+
+  &::after {
+    content: "";
+    background: linear-gradient(
+      to right,
+      var(--primary-color) 0%,
+      var(--primary-color) 33.33%,
+      var(--third-color) 33.33%,
+      var(--third-color) 66.66%,
+      var(--fifth-color) 66.66%,
+      var(--fifth-color) 100%
+    );
+    height: 4px;
+    background-color: var(--secondary-color);
+    position: absolute;
+    left: 0;
+    top: 100%;
+    width: 100%;
+    border-radius: 2px;
   }
 `;
 
@@ -201,20 +260,23 @@ const Subtitle = styled.p`
   margin-bottom: 30px;
   @media (max-width: 1200px) {
     max-width: 90%;
+    text-align: left;
   }
 `;
 
 const UploadModal = styled.div`
   position: fixed;
   top: 0;
-  left: 0;
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
+  scale: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: all 0.5s;
+  transition: all 1s;
+  width: 95%;
+  padding: 50px 0;
 `;
 
 const ModalContent = styled.div`
@@ -237,6 +299,11 @@ const CloseButton = styled.button`
   border: none;
   font-size: 24px;
   cursor: pointer;
+
+  &:hover {
+    background-color: var(--fourth-color);
+    border-radius: 50%;
+  }
 `;
 
 const UploadArea = styled.div`
@@ -286,38 +353,49 @@ const Button = styled.button`
 const CancelButton = styled(Button)`
   background-color: #f0f0f0;
   color: #333;
+  margin-top: 20px;
+  transition: all 0.5s;
+  &:hover {
+    background-color: var(--fifth-color);
+  }
 `;
 
 const UploadButton = styled(Button)`
   background-color: var(--primary-color);
   color: white;
   margin-top: 20px;
-`;
-const JobDescriptionInput = styled.textarea`
-  width: 100%;
-  max-width: 600px;
-  height: 150px;
-  padding: 12px;
-  border: 2px solid var(--primary-color);
-  border-radius: 8px;
-  font-size: 16px;
-  resize: vertical;
-  margin-bottom: 20px;
-  transition: border-color 0.3s ease;
-
-  &:focus {
-    outline: none;
-    border-color: var(--secondary-color);
-    box-shadow: 0 0 0 2px rgba(var(--secondary-color-rgb), 0.2);
-  }
-
-  &::placeholder {
-    color: #aaa;
-  }
-
-  @media (max-width: 1000px) {
-    width: 95%;
+  transition: all 0.5s;
+  &:hover {
+    background-color: var(--secondary-color);
   }
 `;
+
+// const JobDescriptionInput = styled.textarea`
+//   width: 100%;
+//   max-width: 600px;
+//   height: 150px;
+//   padding: 12px;
+//   border: 1.5px solid var(--primary-color);
+//   border-radius: 8px;
+//   font-size: 16px;
+//   resize: vertical;
+//   margin-bottom: 20px;
+//   transition: border-color 0.3s ease;
+//   background-color: var(--fifth-color);
+
+//   &:focus {
+//     outline: none;
+//     border-color: var(--secondary-color);
+//     box-shadow: 0 0 0 2px rgba(var(--secondary-color-rgb), 0.2);
+//   }
+
+//   &::placeholder {
+//     color: var(--primary-color);
+//   }
+
+//   @media (max-width: 1000px) {
+//     width: 95%;
+//   }
+// `;
 
 export default Ats_resume;

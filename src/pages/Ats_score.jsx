@@ -1,100 +1,67 @@
 import React, { useState, useEffect } from "react";
+// imported for styling //
 import styled from "styled-components";
 
+// imported for linking other pages //
 import { Link } from "react-router-dom";
 
+// gemini api //
 import { chatSession } from "../gen-ai/Gemini";
 
+// dynamicly allow prompt2 to travell any where //
 import { useResumeContext } from "../systems/ResumeContext";
+// useResumeContext have prompt2 = extracted resume info //
 
+// use for converting html tags from a string to real tags //
 import DOMPurify from "dompurify";
 
-// icon imports
+// import the prompt for the resume extraction //
+import Resume_extract_prompt from "../prompts/Prompts";
 
+// icon imports
 import { IoDocumentTextSharp } from "react-icons/io5";
 import { IoBarChart } from "react-icons/io5";
 import { IoMdSettings } from "react-icons/io";
 
+//import components //
+import Spinner from "../components/Spinner";
+
 const Ats_score = () => {
   const [activePage, setActivePage] = useState("Score");
   const [response, setResponse] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const { prompt2 } = useResumeContext();
-  console.log(prompt2);
+  const { prompt2 } = useResumeContext(); // now this prompt2 is the same prompt2 as in the useResumeContext file have .
 
+  // responssible for the gemini to take input and give response //
   useEffect(() => {
     const fetchResponse = async () => {
+      setLoading(true);
       try {
-        const resume_response =
-          await chatSession.sendMessage(`Task: Extract all the candidate information from the resume (${prompt2}) and generate a detailed analysis structured with HTML tags:
-
-            
-Note: sharp start from the name nothing extra .
-
-<p class = "name">[Candidate Name]</p>
-
-line under the name .
-
-<h4>Contact Information</h4>
-<ul>
-  <li>[Phone Number]</li>
-  <li>[Email Address]</li>
-  <a>[other links]</a>
-</ul>
-
-<h4>Summary</h4>
-<p>[Professional summary or objective statement]</p>
-
-<h4>Skills</h4>
-<ul>
-  <li class = "skills">[Skill 1]</li>
-  <li class = "skills">[Skill 2]</li>
-  <!-- Add more skills as needed -->
-</ul>
-
-<h4>Experience</h4>
-<h5>[Job Title] at [Company Name]</h5>
-<p>[Employment Period]</p>
-<ul>
-  <li>[Responsibility/Achievement 1]</li>
-  <li>[Responsibility/Achievement 2]</li>
-  <!-- Add more items as needed -->
-</ul>
-
-<!-- Repeat the above structure for each job -->
-
-<h4>Education</h4>
-<h5>[Degree] in [Field of Study]</h5>
-<p>[University Name], [Graduation Year]</p>
-
-<h4>Projects</h4>
-<h5>[Project Name]</h5>
-<ul>
-  <li>[Project Description]</li>
-  <li>[Technologies Used]</li>
-  <!-- Add more details as needed -->
-</ul>
-
-<!-- Repeat the above structure for each project -->
-Note : if some points is not specified then ignore it .
- . No need of important notes or explanations.
-`);
-        setResponse(resume_response.response.text());
+        const resume_response = await chatSession.sendMessage(
+          Resume_extract_prompt(prompt2) // the prompt defind in the Prompts.js file .
+        );
+        setResponse(resume_response.response.text()); // response hook have the generated response from the gemini .
       } catch (error) {
         console.error("Error fetching response:", error);
       }
+      setLoading(false);
     };
 
     fetchResponse();
   }, []);
 
+  // optional (for testing purpose) //
   useEffect(() => {
     console.log(response);
   }, [response]);
 
+  // neccessary for the HTML tag conversion //
   const formatResponse = (text) => {
     return DOMPurify.sanitize(text);
   };
+
+  // everything inside the return statement will be render as HTML //
 
   return (
     <Container>
@@ -133,26 +100,115 @@ Note : if some points is not specified then ignore it .
         </SidebarItem>
       </Sidebar>
       <MainContent>
-        {response && (
-          <ResumeLayout>
-            <h2>Candidate Resume</h2>
-            <div
-              dangerouslySetInnerHTML={{ __html: formatResponse(response) }}
-            />
-          </ResumeLayout>
+        {loading ? (
+          <Spinner color="var(--primary-color)" />
+        ) : (
+          <div>
+            {response && (
+              <ResumeLayout>
+                <div
+                  dangerouslySetInnerHTML={{ __html: formatResponse(response) }}
+                />
+              </ResumeLayout>
+            )}
+          </div>
         )}
       </MainContent>
     </Container>
   );
 };
 
+// .........................// styling part //............................................//
+
+// tag 1 //
+const Container = styled.div`
+  display: flex;
+  min-height: 80vh;
+  font-family: Arial, sans-serif;
+
+  margin: auto;
+  @media (max-width: 1200px) {
+    flex-direction: column;
+  }
+`;
+
+// tag2 //
+const Sidebar = styled.div`
+  width: 150px;
+  background-color: white;
+  color: var(--primary-color);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+  position: fixed;
+  left: 60px;
+  z-index: 100;
+
+  @media (max-width: 1200px) {
+    flex-direction: row;
+    top: 0;
+    width: 100%;
+    left: 0px;
+  }
+`;
+
+// tag3 //
+
+const SidebarItem = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  background-color: ${({ active }) =>
+    active ? "var(--fifth-color)" : "transparent"};
+  border-radius: 5px;
+
+  color: var(--primary-color);
+  text-decoration: none;
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
+`;
+
+// tag4 //
+const Icon = styled.span`
+  margin-right: 10px;
+
+  @media (max-width: 768px) {
+    margin-right: 0;
+  }
+`;
+
+// tag5 //
+const MainContent = styled.div`
+  flex-grow: 1;
+  padding: 10px;
+  margin-left: 220px;
+  max-width: 60vw;
+
+  @media (max-width: 1200px) {
+    margin-left: 0;
+    margin-top: 100px;
+    overflow-x: hidden;
+    max-width: 100vw;
+    padding: 2px;
+  }
+`;
+
+// tag6 //
 const ResumeLayout = styled.div`
   max-width: 800px;
-  margin: 0 auto;
+  margin: 10px auto;
   background-color: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   padding: 30px;
+
+  @media (max-width: 1000px) {
+    padding: 30px 5px;
+  }
 
   h2 {
     color: var(--primary-color);
@@ -167,9 +223,29 @@ const ResumeLayout = styled.div`
     color: var(--primary-color);
     text-align: center;
     margin: 0;
+    position: relative;
 
     @media (max-width: 1000px) {
       font-size: 25px;
+    }
+    &::after {
+      content: "";
+      background: linear-gradient(
+        to right,
+        var(--primary-color) 0%,
+        var(--primary-color) 33.33%,
+        var(--third-color) 33.33%,
+        var(--third-color) 66.66%,
+        var(--fifth-color) 66.66%,
+        var(--fifth-color) 100%
+      );
+      height: 4px;
+      background-color: var(--secondary-color);
+      position: absolute;
+      left: 0;
+      top: 100%;
+      width: 100%;
+      border-radius: 2px;
     }
   }
 
@@ -177,12 +253,14 @@ const ResumeLayout = styled.div`
     color: var(--secondary-color);
     margin-top: 25px;
     margin-bottom: 15px;
+    font-size: 20px;
   }
 
   h5 {
     color: var(--tertiary-color);
     margin-top: 15px;
     margin-bottom: 10px;
+    font-size: 15px;
   }
 
   ul {
@@ -203,75 +281,15 @@ const ResumeLayout = styled.div`
   li {
     margin-bottom: 8px;
     line-height: 1.5;
+    font-size: 15px;
   }
 
   p {
     line-height: 1.6;
+    font-size: 15px;
   }
-`;
-
-const Container = styled.div`
-  display: flex;
-  min-height: 80vh;
-  font-family: Arial, sans-serif;
-
-  margin: auto;
-  @media (max-width: 1200px) {
-    flex-direction: column;
-  }
-`;
-
-const Sidebar = styled.div`
-  width: 150px;
-  background-color: white;
-  color: var(--primary-color);
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  margin-top: 50px;
-  position: fixed;
-
-  @media (max-width: 1200px) {
-    flex-direction: row;
-    top: 0;
-    width: 100%;
-  }
-`;
-
-const SidebarItem = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  background-color: ${({ active }) =>
-    active ? "var(--fifth-color)" : "transparent"};
-  border-radius: 5px;
-  /* color: ${({ active }) => (active ? "white" : "var(--primary-color)")}; */
-  color: var(--primary-color);
-  text-decoration: none;
-  @media (max-width: 768px) {
-    justify-content: center;
-  }
-`;
-
-const Icon = styled.span`
-  margin-right: 10px;
-
-  @media (max-width: 768px) {
-    margin-right: 0;
-  }
-`;
-
-const MainContent = styled.div`
-  flex-grow: 1;
-  padding: 20px;
-  margin-left: 220px; // Adjust based on your sidebar width
-
-  @media (max-width: 1200px) {
-    margin-left: 0;
-    margin-top: 100px;
-    overflow-x: hidden;
+  a {
+    font-size: 15px;
   }
 `;
 
