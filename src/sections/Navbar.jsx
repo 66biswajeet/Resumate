@@ -1,8 +1,10 @@
 // Navbar.jsx
 import React, { useState } from "react";
 import styled from "styled-components";
-import LogoImage from "../assets/RESUMATE.png";
+import LogoImage from "../assets/logo3.png";
 import { HiMenuAlt1 } from "react-icons/hi";
+
+import { Link, useLocation } from "react-router-dom";
 
 const Nav = styled.nav`
   display: flex;
@@ -11,9 +13,14 @@ const Nav = styled.nav`
   padding: 0rem 2rem;
   background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 95%;
+  position: fixed;
+  top: 0;
+  z-index: 100;
 
   @media (max-width: 1200px) {
     justify-content: space-between;
+    width: 85%;
   }
 `;
 
@@ -35,13 +42,13 @@ const MenuItems = styled.div`
     flex-direction: column;
     position: absolute;
     top: 80px;
-    left: 0px;
+    left: -33px;
     right: 0;
     background-color: white;
     padding: 1rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     align-items: center;
-    background-color: black;
+    width: 100%;
   }
 `;
 
@@ -56,16 +63,24 @@ const MenuItem = styled.a`
     content: "";
 
     height: 4px;
-    background-color: var(--secondary-color);
+    background: linear-gradient(
+      to right,
+      var(--primary-color) 0%,
+      var(--primary-color) 33.33%,
+      var(--third-color) 33.33%,
+      var(--third-color) 66.66%,
+      var(--fifth-color) 66.66%,
+      var(--fifth-color) 100%
+    );
     position: absolute;
     display: ${({ active }) => (active ? "block" : "none")};
 
     width: ${({ active }) => (active ? "100%" : "0%")};
+    border-radius: 2px;
   }
 
   @media (max-width: 1200px) {
     margin: 1rem 0;
-    color: white;
   }
 `;
 
@@ -73,7 +88,7 @@ const MenuBtn = styled.div`
   display: flex;
   column-gap: 10px;
   margin: 0 0 0 100px;
-  @media (max-width: 1000px) {
+  @media (max-width: 1200px) {
     flex-direction: column;
     row-gap: 10px;
     margin: 0;
@@ -102,19 +117,29 @@ const Button = styled.button`
   padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
-  margin-left: 1rem;
+
   transition: all 0.3s;
   &:hover {
     background-color: var(--secondary-color);
+  }
+  @media (max-width: 1200px) {
+    margin: 0 1rem;
   }
 `;
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activePage, setActivePage] = useState("Home");
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const location = useLocation();
+  const isActive = (paths) => {
+    if (Array.isArray(paths)) {
+      return paths.some((path) => location.pathname.startsWith(path));
+    }
+    return location.pathname === paths;
   };
 
   return (
@@ -126,31 +151,27 @@ const Navbar = () => {
         <HiMenuAlt1 style={{ color: "var(--primary-color)" }} />
       </HamburgerButton>
       <MenuItems isOpen={isMenuOpen}>
-        <MenuItem
-          href="#"
-          active={activePage === "Home"}
-          onClick={() => setActivePage("Home")}
-        >
+        <MenuItem as={Link} to="/" active={isActive("/")}>
           Home
         </MenuItem>
         <MenuItem
-          href="#"
-          active={activePage === "Resume Build"}
-          onClick={() => setActivePage("Resume Build")}
+          as={Link}
+          to="/resume-build"
+          active={isActive("/resume-build")}
         >
           Resume Build
         </MenuItem>
         <MenuItem
-          href="#"
-          active={activePage === "ATS Score"}
-          onClick={() => setActivePage("ATS Score")}
+          as={Link}
+          to="/ats/resume"
+          active={isActive(["/ats/resume", "/ats/score"])}
         >
           ATS Score
         </MenuItem>
         <MenuItem
-          href="#"
-          active={activePage === "Resume Parser"}
-          onClick={() => setActivePage("Resume Parser")}
+          as={Link}
+          to="/resume-parser"
+          active={isActive("/resume-parser")}
         >
           Resume Parser
         </MenuItem>
