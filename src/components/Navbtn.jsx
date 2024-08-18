@@ -5,8 +5,12 @@ import { FaFileUpload } from "react-icons/fa";
 const Button = styled.button`
   position: relative;
   overflow: hidden;
+
   height: 2.22rem;
   width: 100%;
+
+  height: 2.15rem;
+
   padding: 0 2rem;
   border-radius: 0.5rem;
   background: ${({ bgColor }) => bgColor || " var(--primary-color)"};
