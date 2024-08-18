@@ -16,6 +16,7 @@ import Navbtn from "../components/Navbtn";
 import { IoDocumentTextSharp } from "react-icons/io5";
 import { IoBarChart } from "react-icons/io5";
 import { IoMdSettings } from "react-icons/io";
+import { FaBriefcase, FaFileUpload } from "react-icons/fa";
 
 const Ats_resume = () => {
   const [isUploadOpen, setIsUploadOpen] = useState(false);
@@ -59,23 +60,27 @@ const Ats_resume = () => {
             Score
           </SidebarItem>
         </Link>
-        <SidebarItem
-          active={activePage === "Settings"}
-          onClick={() => setActivePage("Settings")}
-        >
-          <Icon>
-            <IoMdSettings />
-          </Icon>
-          Settings
-        </SidebarItem>
+        <Link to={"/ats/meter"} style={{ textDecoration: "none" }}>
+          <SidebarItem
+            active={activePage === "Settings"}
+            onClick={() => setActivePage("Settings")}
+          >
+            <Icon>
+              <IoMdSettings />
+            </Icon>
+            Settings
+          </SidebarItem>
+        </Link>
       </Sidebar>
       <MainContent>
+        <BackgroundPattern />
         <Title>Applicant Tracking System</Title>
         <Subtitle>
           Are you not getting enough interview calls? Check your Resume's ATS
           compatibility & get your GAP Report in just 3 minutes. This is your
           chance to get 2X more interview calls.
         </Subtitle>
+
         <JobDescription
           value={prompt1}
           onChange={(e) => setPrompt1(e.target.value)}
@@ -84,6 +89,7 @@ const Ats_resume = () => {
         <div onClick={handleUploadClick}>
           <Navbtn text={"Upload Resume"}> </Navbtn>
         </div>
+
         {isUploadOpen && (
           <UploadModal>
             <ModalContent>
@@ -124,6 +130,7 @@ const Ats_resume = () => {
 };
 
 //.............................// styling section //..........................//
+
 const Container = styled.div`
   /* display: flex;
   min-height: 80vh;
@@ -141,6 +148,22 @@ const Container = styled.div`
   @media (max-width: 1200px) {
     flex-direction: column;
   }
+`;
+const BackgroundPattern = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--fifth-color) 0,
+    var(--fifth-color) 10px,
+    transparent 10px,
+    transparent 20px
+  );
+  opacity: 0.3;
 `;
 
 const Sidebar = styled.div`
@@ -173,6 +196,7 @@ const Sidebar = styled.div`
     flex-direction: row;
     top: 0;
     width: 100%;
+    justify-content: center;
     left: 0px;
   }
 `;
@@ -204,21 +228,22 @@ const Icon = styled.span`
 const MainContent = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 50px;
+  /* margin-top: 50px; */
   margin-left: 200px;
   margin-right: auto;
   width: 80%;
   align-items: center;
   padding: 30px;
+  height: 95vh;
 
   justify-content: center;
   scale: 1;
 
   @media (max-width: 1200px) {
     max-width: 100%;
-    align-items: flex-start;
+    align-items: center;
     margin-left: auto;
-    margin-top: 100px;
+    margin-top: 50px;
   }
 `;
 
@@ -228,7 +253,7 @@ const Title = styled.h1`
   position: relative;
   padding-bottom: 10px;
   @media (max-width: 1200px) {
-    font-size: 30px;
+    font-size: 15px;
   }
 
   &::after {
