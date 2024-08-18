@@ -305,7 +305,7 @@ const ResumeLayout = styled.div`
     padding-left: 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 5px;
   }
 
   .skills {
@@ -318,8 +318,8 @@ const ResumeLayout = styled.div`
 
   li {
     margin-bottom: 8px;
-    line-height: 1.5;
-    font-size: 15px;
+    line-height: 1;
+    font-size: 10px;
   }
 
   p {

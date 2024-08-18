@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import styled from "styled-components";
 
 import { Link } from "react-router-dom";
+
+import { motion, AnimatePresence } from "framer-motion";
 
 // use here for file name to show on the popup //
 import { useResumeExtract } from "../systems/useResumeExtract";
@@ -11,6 +13,7 @@ import { useJdContext } from "../systems/JdContext";
 // section & components imports  //
 import JobDescription from "../sections/JobDescription";
 import Navbtn from "../components/Navbtn";
+import Ats_resume_progres from "../sections/Ats_resume_progres";
 
 // icon imports
 import { IoDocumentTextSharp } from "react-icons/io5";
@@ -22,8 +25,9 @@ const Ats_resume = () => {
   const [isUploadOpen, setIsUploadOpen] = useState(false);
 
   const [activePage, setActivePage] = useState("Resume");
+  const [currentStep, setCurrentStep] = useState(0);
 
-  const { selectedFile, extractText } = useResumeExtract();
+  const { prompt2, selectedFile, extractText } = useResumeExtract();
   const { prompt1, setPrompt1 } = useJdContext();
 
   // prompt1 = job description and prompt2 = resume text
@@ -33,6 +37,15 @@ const Ats_resume = () => {
     console.log("Upload button clicked");
     setIsUploadOpen(true);
   };
+
+  useEffect(() => {
+    if (prompt1.trim() !== "") {
+      setCurrentStep(1);
+    }
+    if ((prompt1.trim() !== "" && selectedFile) || prompt2.trim() !== "") {
+      setCurrentStep(2);
+    }
+  }, [prompt1, selectedFile]);
 
   return (
     <Container>
@@ -73,13 +86,14 @@ const Ats_resume = () => {
         </Link>
       </Sidebar>
       <MainContent>
-        <BackgroundPattern />
         <Title>Applicant Tracking System</Title>
         <Subtitle>
           Are you not getting enough interview calls? Check your Resume's ATS
           compatibility & get your GAP Report in just 3 minutes. This is your
           chance to get 2X more interview calls.
         </Subtitle>
+
+        <Ats_resume_progres currentStep={currentStep} />
 
         <JobDescription
           value={prompt1}
@@ -89,9 +103,23 @@ const Ats_resume = () => {
         <div onClick={handleUploadClick}>
           <Navbtn text={"Upload Resume"}> </Navbtn>
         </div>
+        <Link to={"/ats/score"}>
+          <UploadButton
+            as={motion.button}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Check ATS
+          </UploadButton>
+        </Link>
 
         {isUploadOpen && (
-          <UploadModal>
+          <UploadModal
+            as={motion.div}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
             <ModalContent>
               <ModalHeader>
                 <h2>Upload Resume</h2>
@@ -115,11 +143,8 @@ const Ats_resume = () => {
               </UploadArea>
               <ModalFooter>
                 <CancelButton onClick={() => setIsUploadOpen(false)}>
-                  Cancel
+                  Upload
                 </CancelButton>
-                <Link to={"/ats/score"}>
-                  <UploadButton>Check ATS</UploadButton>
-                </Link>
               </ModalFooter>
             </ModalContent>
           </UploadModal>
@@ -132,55 +157,17 @@ const Ats_resume = () => {
 //.............................// styling section //..........................//
 
 const Container = styled.div`
-  /* display: flex;
-  min-height: 80vh;
-  font-family: Arial, sans-serif;
-  justify-content: center;
-  margin: auto;
-  @media (max-width: 1200px) {
-    flex-direction: column;
-  } */
   display: flex;
-  min-height: 80vh;
+  min-height: 100vh;
   font-family: Arial, sans-serif;
-
   margin: auto;
+
   @media (max-width: 1200px) {
     flex-direction: column;
   }
 `;
-const BackgroundPattern = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  background-image: repeating-linear-gradient(
-    45deg,
-    var(--fifth-color) 0,
-    var(--fifth-color) 10px,
-    transparent 10px,
-    transparent 20px
-  );
-  opacity: 0.3;
-`;
 
 const Sidebar = styled.div`
-  /* width: 150px;
-  background-color: white;
-  color: var(--primary-color);
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  margin-top: 50px;
-
-  @media (max-width: 1200px) {
-    flex-direction: row;
-    top: 0;
-    width: 85%;
-    left: 0px;
-  } */
   width: 150px;
   background-color: white;
   color: var(--primary-color);
@@ -234,8 +221,8 @@ const MainContent = styled.div`
   width: 80%;
   align-items: center;
   padding: 30px;
-  height: 95vh;
-
+  height: 100vh;
+  margin-top: 50px;
   justify-content: center;
   scale: 1;
 
@@ -243,7 +230,7 @@ const MainContent = styled.div`
     max-width: 100%;
     align-items: center;
     margin-left: auto;
-    margin-top: 50px;
+    margin-top: 150px;
   }
 `;
 
@@ -390,6 +377,7 @@ const UploadButton = styled(Button)`
   color: white;
   margin-top: 20px;
   transition: all 0.5s;
+  margin-left: 50px;
   &:hover {
     background-color: var(--secondary-color);
   }
