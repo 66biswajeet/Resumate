@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-// imported for styling //
 import styled from "styled-components";
 
 // imported for linking other pages //
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 // gemini api //
 import { chatSession } from "../gen-ai/Gemini";
 
 // dynamicly allow prompt2 to travell any where //
+import { useJdContext } from "../systems/JdContext";
 import { useResumeContext } from "../systems/ResumeContext";
 // useResumeContext have prompt2 = extracted resume info //
 
@@ -26,15 +26,24 @@ import { IoMdSettings } from "react-icons/io";
 //import components //
 import Spinner from "../components/Spinner";
 
+import Ats_meter from "./Ats_meter";
+
 const Ats_score = () => {
   const [activePage, setActivePage] = useState("Score");
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isEmptyPrompt, setIsEmptyPrompt] = useState(false);
 
+  const { prompt1 } = useJdContext();
   const { prompt2 } = useResumeContext(); // now this prompt2 is the same prompt2 as in the useResumeContext file have .
 
   // responssible for the gemini to take input and give response //
   useEffect(() => {
+    if (prompt2.trim() === "" || prompt1.trim() === "") {
+      window.alert("Please Give Resume and Jobdescription details first....");
+      setIsEmptyPrompt(true);
+      return;
+    }
     const fetchResponse = async () => {
       setLoading(true);
       try {
@@ -52,9 +61,9 @@ const Ats_score = () => {
   }, []);
 
   // optional (for testing purpose) //
-  useEffect(() => {
-    console.log(response);
-  }, [response]);
+  // useEffect(() => {
+  //   console.log(response);
+  // }, [response]);
 
   // neccessary for the HTML tag conversion //
   const formatResponse = (text) => {
@@ -99,21 +108,31 @@ const Ats_score = () => {
           Settings
         </SidebarItem>
       </Sidebar>
-      <MainContent>
-        {loading ? (
-          <Spinner color="var(--primary-color)" />
-        ) : (
-          <div>
-            {response && (
-              <ResumeLayout>
-                <div
-                  dangerouslySetInnerHTML={{ __html: formatResponse(response) }}
-                />
-              </ResumeLayout>
-            )}
-          </div>
-        )}
-      </MainContent>
+
+      {isEmptyPrompt ? (
+        <Navigate to="/ats/resume" />
+      ) : (
+        <MainContent>
+          {loading ? (
+            <Spinner color="var(--primary-color)" />
+          ) : (
+            <>
+              <Ats_meter />
+              <ContentLayout>
+                {response && (
+                  <ResumeLayout>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: formatResponse(response),
+                      }}
+                    />
+                  </ResumeLayout>
+                )}
+              </ContentLayout>
+            </>
+          )}
+        </MainContent>
+      )}
     </Container>
   );
 };
@@ -150,6 +169,7 @@ const Sidebar = styled.div`
     top: 0;
     width: 100%;
     left: 0px;
+    justify-content: center;
   }
 `;
 
@@ -186,7 +206,7 @@ const MainContent = styled.div`
   flex-grow: 1;
   padding: 10px;
   margin-left: 220px;
-  max-width: 60vw;
+  max-width: 90vw;
 
   @media (max-width: 1200px) {
     margin-left: 0;
@@ -197,17 +217,34 @@ const MainContent = styled.div`
   }
 `;
 
+const ContentLayout = styled.div`
+  display: flex;
+  flex-direction: row;
+  padding: 10px 10px;
+  justify-content: flex-start;
+  max-width: 95%;
+
+  @media (max-width: 1200px) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+`;
+
 // tag6 //
 const ResumeLayout = styled.div`
-  max-width: 800px;
-  margin: 10px auto;
+  max-width: 700px;
+  margin: 10px 50px 10px 0px;
   background-color: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   padding: 30px;
 
-  @media (max-width: 1000px) {
+  @media (max-width: 1200px) {
     padding: 30px 5px;
+
+    width: 95vw;
+    margin: 200px 10px 10px 10px;
   }
 
   h2 {
@@ -276,6 +313,7 @@ const ResumeLayout = styled.div`
     padding: 0 5px;
     border-radius: 5px;
     background-color: var(--fifth-color);
+    font-size: 15px;
   }
 
   li {
@@ -285,11 +323,11 @@ const ResumeLayout = styled.div`
   }
 
   p {
-    line-height: 1.6;
-    font-size: 15px;
+    line-height: 1.1;
+    font-size: 12px;
   }
   a {
-    font-size: 15px;
+    font-size: 12px;
   }
 `;
 

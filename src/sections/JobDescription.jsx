@@ -90,7 +90,7 @@ const JobDescription = ({ value, onChange }) => {
     <JobDescriptionContainer>
       <JobDescriptionLabel>Job Description</JobDescriptionLabel>
       <JobDescriptionInput
-        placeholder="Paste the job description here..."
+        placeholder="Paste the job description here... OR don't jave a job description then just write the jobRole here"
         value={value}
         onChange={onChange}
       />

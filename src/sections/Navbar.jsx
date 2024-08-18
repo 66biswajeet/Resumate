@@ -16,7 +16,7 @@ const Nav = styled.nav`
   width: 95%;
   position: fixed;
   top: 0;
-  z-index: 100;
+  z-index: 1000;
 
   @media (max-width: 1200px) {
     justify-content: space-between;
@@ -41,7 +41,7 @@ const MenuItems = styled.div`
     display: ${({ isOpen }) => (isOpen ? "flex" : "none")};
     flex-direction: column;
     position: absolute;
-    top: 80px;
+    top: 60px;
     left: -33px;
     right: 0;
     background-color: white;
@@ -134,6 +134,10 @@ const Navbar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
   const location = useLocation();
   const isActive = (paths) => {
     if (Array.isArray(paths)) {
@@ -150,7 +154,7 @@ const Navbar = () => {
       <HamburgerButton onClick={toggleMenu}>
         <HiMenuAlt1 style={{ color: "var(--primary-color)" }} />
       </HamburgerButton>
-      <MenuItems isOpen={isMenuOpen}>
+      <MenuItems isOpen={isMenuOpen} onClick={closeMenu}>
         <MenuItem as={Link} to="/" active={isActive("/")}>
           Home
         </MenuItem>
