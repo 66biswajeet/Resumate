@@ -8,6 +8,8 @@ import Ats_resume from "./pages/Ats_resume";
 import Ats_score from "./pages/Ats_score";
 import Ats_meter from "./pages/Ats_meter";
 
+import "./App.css";
+
 const App = () => {
   return (
     <React.StrictMode>

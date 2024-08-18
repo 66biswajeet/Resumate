@@ -88,9 +88,10 @@ const JobDescriptionLabel = styled.label`
 const JobDescription = ({ value, onChange }) => {
   return (
     <JobDescriptionContainer>
-      <JobDescriptionLabel>Job Description</JobDescriptionLabel>
+      <JobDescriptionLabel>Job Description | OR | Job Role</JobDescriptionLabel>
+
       <JobDescriptionInput
-        placeholder="Paste the job description here... OR don't jave a job description then just write the jobRole here"
+        placeholder="Paste the job description OR job role here...  "
         value={value}
         onChange={onChange}
       />
