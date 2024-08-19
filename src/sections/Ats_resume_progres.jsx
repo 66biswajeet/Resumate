@@ -51,7 +51,7 @@ const StepCircle = styled.div`
 
 const StepText = styled.span`
   color: ${(props) => (props.active ? "#2196F3" : "#757575")};
-  font-size: 14px;
+  font-size: 10px;
   transition: color 0.3s ease;
 `;
 

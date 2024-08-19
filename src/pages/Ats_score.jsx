@@ -114,7 +114,9 @@ const Ats_score = () => {
       ) : (
         <MainContent>
           {loading ? (
-            <Spinner color="var(--primary-color)" />
+            <>
+              <Spinner color="var(--primary-color)" />
+            </>
           ) : (
             <>
               <Ats_meter />
@@ -161,7 +163,7 @@ const Sidebar = styled.div`
   flex-direction: column;
   margin-top: 50px;
   position: fixed;
-  left: 60px;
+  left: 18px;
   z-index: 100;
 
   @media (max-width: 1200px) {
@@ -318,7 +320,7 @@ const ResumeLayout = styled.div`
 
   li {
     margin-bottom: 8px;
-    line-height: 1;
+
     font-size: 10px;
   }
 
