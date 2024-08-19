@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 const JobDescriptionContainer = styled.div`
   position: relative;
@@ -87,16 +87,20 @@ const JobDescriptionLabel = styled.label`
 
 const JobDescription = ({ value, onChange }) => {
   return (
-    <JobDescriptionContainer>
-      <JobDescriptionLabel>Job Description | OR | Job Role</JobDescriptionLabel>
+    <>
+      <JobDescriptionContainer>
+        <JobDescriptionLabel>
+          Job Description | OR | Job Role
+        </JobDescriptionLabel>
 
-      <JobDescriptionInput
-        placeholder="Paste the job description OR job role here...  "
-        value={value}
-        onChange={onChange}
-      />
-      <DoodleDecoration />
-    </JobDescriptionContainer>
+        <JobDescriptionInput
+          placeholder="Paste the job description OR job role here...  "
+          value={value}
+          onChange={onChange}
+        />
+        <DoodleDecoration />
+      </JobDescriptionContainer>
+    </>
   );
 };
 

@@ -10,17 +10,18 @@ const Nav = styled.nav`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 0rem 2rem;
+  padding: 0 25px 0 0;
   background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 95%;
+  width: 98%;
   position: fixed;
   top: 0;
   z-index: 1000;
 
   @media (max-width: 1200px) {
     justify-content: space-between;
-    width: 85%;
+    width: 98%;
+    padding: 0 25px 0 0;
   }
 `;
 

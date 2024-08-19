@@ -14,6 +14,7 @@ import { useJdContext } from "../systems/JdContext";
 import JobDescription from "../sections/JobDescription";
 import Navbtn from "../components/Navbtn";
 import Ats_resume_progres from "../sections/Ats_resume_progres";
+import AtsResumeSection1 from "../sections/Ats_resume_section1";
 
 // icon imports
 import { IoDocumentTextSharp } from "react-icons/io5";
@@ -86,6 +87,7 @@ const Ats_resume = () => {
         </Link>
       </Sidebar>
       <MainContent>
+        <AtsResumeSection1 />
         <Title>Applicant Tracking System</Title>
         <Subtitle>
           Are you not getting enough interview calls? Check your Resume's ATS
@@ -100,7 +102,7 @@ const Ats_resume = () => {
           onChange={(e) => setPrompt1(e.target.value)}
         />
 
-        <div onClick={handleUploadClick}>
+        <div id="subtitle" onClick={handleUploadClick}>
           <Navbtn text={"Upload Resume"}> </Navbtn>
         </div>
         <Link to={"/ats/score"}>
@@ -109,7 +111,7 @@ const Ats_resume = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            Check ATS
+            Check ATS Score
           </UploadButton>
         </Link>
 
@@ -176,7 +178,7 @@ const Sidebar = styled.div`
   flex-direction: column;
   margin-top: 50px;
   position: fixed;
-  left: 60px;
+  left: 18px;
   z-index: 100;
 
   @media (max-width: 1200px) {
@@ -215,22 +217,23 @@ const Icon = styled.span`
 const MainContent = styled.div`
   display: flex;
   flex-direction: column;
-  /* margin-top: 50px; */
+
   margin-left: 200px;
   margin-right: auto;
   width: 80%;
   align-items: center;
   padding: 30px;
-  height: 100vh;
-  margin-top: 50px;
+
+  /* margin-top: 30vh; */
   justify-content: center;
   scale: 1;
+  margin-bottom: 10vh;
 
   @media (max-width: 1200px) {
     max-width: 100%;
     align-items: center;
     margin-left: auto;
-    margin-top: 150px;
+    margin-top: 10vh;
   }
 `;
 
@@ -285,7 +288,7 @@ const UploadModal = styled.div`
   scale: 1;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
   transition: all 1s;
   width: 95%;
   padding: 50px 0;
@@ -378,8 +381,14 @@ const UploadButton = styled(Button)`
   margin-top: 20px;
   transition: all 0.5s;
   margin-left: 50px;
+  width: 50vw;
+  height: 50px;
   &:hover {
     background-color: var(--secondary-color);
+  }
+
+  @media (max-width: 768px) {
+    margin-left: 0px;
   }
 `;
 
