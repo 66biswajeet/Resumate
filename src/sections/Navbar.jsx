@@ -6,6 +6,8 @@ import { HiMenuAlt1 } from "react-icons/hi";
 
 import { Link, useLocation } from "react-router-dom";
 
+import { motion, AnimatePresence } from "framer-motion";
+
 const Nav = styled.nav`
   display: flex;
   justify-content: space-around;
@@ -33,10 +35,10 @@ const Logo = styled.img`
   height: 50px;
 `;
 
-const MenuItems = styled.div`
+const MenuItems = styled(motion.div)`
   display: flex;
   justify-content: space-between;
-  transition: all 1s;
+  transition: all ease-in-out;
 
   @media (max-width: 1200px) {
     display: ${({ isOpen }) => (isOpen ? "flex" : "none")};
@@ -45,11 +47,13 @@ const MenuItems = styled.div`
     top: 60px;
     left: -33px;
     right: 0;
-    background-color: white;
+    background-color: rgb(0 0 0 / 90%);
     padding: 1rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     align-items: center;
     width: 100%;
+    height: 100vh;
+    justify-content: center;
   }
 `;
 
@@ -59,6 +63,7 @@ const MenuItem = styled.a`
   margin-left: 2rem;
   font-weight: bold;
   position: relative;
+  transition: all 1s;
 
   &::after {
     content: "";
@@ -82,6 +87,7 @@ const MenuItem = styled.a`
 
   @media (max-width: 1200px) {
     margin: 1rem 0;
+    color: ${({ active }) => (active ? "var(--primary-color)" : "white")};
   }
 `;
 
@@ -148,16 +154,62 @@ const Navbar = () => {
   };
 
   return (
+    // <Nav>
+    //   <LogoDiv>
+    //     <Logo src={LogoImage} alt="ResumePro Logo" />
+    //   </LogoDiv>
+    //   <HamburgerButton onClick={toggleMenu}>
+    //     <HiMenuAlt1
+    //       style={{ color: "var(--primary-color)", fontSize: "50px" }}
+    //     />
+    //   </HamburgerButton>
+    //   <AnimatePresence>
+    //     <MenuItems
+    //       isOpen={isMenuOpen}
+    //       onClick={closeMenu}
+    //       initial={{ y: "-100%" }}
+    //       animate={{ y: "0%" }}
+    //       exit={{ y: "-100%" }}
+    //       transition={{ duration: 0.5 }}
+    //     >
+    //       <MenuItem as={Link} to="/" active={isActive("/")}>
+    //         Home
+    //       </MenuItem>
+    //       <MenuItem
+    //         as={Link}
+    //         to="/resume-build"
+    //         active={isActive("/resume-build")}
+    //       >
+    //         Resume Build
+    //       </MenuItem>
+    //       <MenuItem
+    //         as={Link}
+    //         to="/ats/resume"
+    //         active={isActive(["/ats/resume", "/ats/score"])}
+    //       >
+    //         ATS Score
+    //       </MenuItem>
+    //       <MenuItem
+    //         as={Link}
+    //         to="/resume-parser"
+    //         active={isActive("/resume-parser")}
+    //       >
+    //         Resume Parser
+    //       </MenuItem>
+
+    //       <MenuBtn>
+    //         <Button href="#">Sign in</Button>
+    //         <Button>Log IN</Button>
+    //       </MenuBtn>
+    //     </MenuItems>
+    //   </AnimatePresence>
+    // </Nav>
+
     <Nav>
       <LogoDiv>
         <Logo src={LogoImage} alt="ResumePro Logo" />
       </LogoDiv>
-      <HamburgerButton onClick={toggleMenu}>
-        <HiMenuAlt1
-          style={{ color: "var(--primary-color)", fontSize: "50px" }}
-        />
-      </HamburgerButton>
-      <MenuItems isOpen={isMenuOpen} onClick={closeMenu}>
+      <MenuItems>
         <MenuItem as={Link} to="/" active={isActive("/")}>
           Home
         </MenuItem>
@@ -188,6 +240,53 @@ const Navbar = () => {
           <Button>Log IN</Button>
         </MenuBtn>
       </MenuItems>
+      <HamburgerButton onClick={toggleMenu}>
+        <HiMenuAlt1
+          style={{ color: "var(--primary-color)", fontSize: "50px" }}
+        />
+      </HamburgerButton>
+      <AnimatePresence>
+        {isMenuOpen && (
+          <MenuItems
+            isOpen={isMenuOpen}
+            onClick={closeMenu}
+            initial={{ y: "-100%" }}
+            animate={{ y: "0%" }}
+            exit={{ y: "-100%" }}
+            transition={{ duration: 0.25 }}
+          >
+            <MenuItem as={Link} to="/" active={isActive("/")}>
+              Home
+            </MenuItem>
+            <MenuItem
+              as={Link}
+              to="/resume-build"
+              active={isActive("/resume-build")}
+            >
+              Resume Build
+            </MenuItem>
+            <MenuItem
+              as={Link}
+              to="/ats/resume"
+              active={isActive(["/ats/resume", "/ats/score"])}
+            >
+              ATS Score
+            </MenuItem>
+            <MenuItem
+              as={Link}
+              to="/resume-parser"
+              active={isActive("/resume-parser")}
+            >
+              Resume Parser
+            </MenuItem>
+
+            <MenuBtn>
+              <Button href="#">Sign in</Button>
+              <Button>Log IN</Button>
+            </MenuBtn>
+          </MenuItems>
+        )}
+      </AnimatePresence>
     </Nav>
   );
 };
