@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import GaugeMeter from "../components/GaugeMeter";
 import styled from "styled-components";
 import { chatSession } from "../gen-ai/Gemini";
@@ -63,21 +63,39 @@ const Container = styled.div`
 `;
 
 const Ats_meter = () => {
-  const [response, setResponse] = useState("");
+  const { response, setResponse } = useJdContext();
   const [loading, setLoading] = useState(false);
+
+  const { prvResponse, setPrvResponse } = useJdContext();
 
   const { prompt1 } = useJdContext();
   const { prompt2 } = useResumeContext();
 
+  const { oldprompt1, setOldprompt1 } = useJdContext();
+  const { oldprompt2, setOldprompt2 } = useJdContext();
+
+  ///////////////////////////////////////////////////////////  testing ////////////////////////////////////////////////////
+
   const handleFetchResponse = useCallback(async () => {
-    // ... fetch response logic
     const fetchResponse = async () => {
       setLoading(true);
       try {
         const jd_response = await chatSession.sendMessage(
-          JdPrompt(prompt1, prompt2) // the prompt defind in the Prompts.js file .
+          JdPrompt(prompt1, prompt2)
         );
-        setResponse(jd_response.response.text()); // response hook have the generated response from the gemini .
+
+        if (oldprompt1 === prompt1 && oldprompt2 === prompt2) {
+          console.log("if cond applied");
+          setResponse(prvResponse);
+          console.log(prvResponse.length);
+        } else {
+          console.log("else cond applied");
+          const newResponse = jd_response.response.text();
+          setResponse(newResponse);
+          setPrvResponse(newResponse); // Store the new response
+          setOldprompt1(prompt1);
+          setOldprompt2(prompt2);
+        }
       } catch (error) {
         console.error("Error fetching response:", error);
       }
@@ -85,12 +103,13 @@ const Ats_meter = () => {
     };
 
     fetchResponse();
-    console.log(response);
   }, [prompt1, prompt2]);
 
   useEffect(() => {
     handleFetchResponse();
-  }, [prompt1, prompt2, handleFetchResponse]);
+  }, []);
+
+  ///////////////////////////////////////////////////////////  testing ////////////////////////////////////////////////////
 
   // useEffect(() => {
   //   const fetchResponse = async () => {

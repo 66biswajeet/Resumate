@@ -10,7 +10,7 @@ const Nav = styled.nav`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 0 25px 0 0;
+  padding: 0 25px;
   background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   width: 98%;
@@ -153,7 +153,9 @@ const Navbar = () => {
         <Logo src={LogoImage} alt="ResumePro Logo" />
       </LogoDiv>
       <HamburgerButton onClick={toggleMenu}>
-        <HiMenuAlt1 style={{ color: "var(--primary-color)" }} />
+        <HiMenuAlt1
+          style={{ color: "var(--primary-color)", fontSize: "50px" }}
+        />
       </HamburgerButton>
       <MenuItems isOpen={isMenuOpen} onClick={closeMenu}>
         <MenuItem as={Link} to="/" active={isActive("/")}>

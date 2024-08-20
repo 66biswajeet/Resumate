@@ -41,39 +41,10 @@ const Ats_score = () => {
 
   // responssible for the gemini to take input and give response //
 
-  const handleFetchResponse = useCallback(async () => {
-    // ... fetch response logic
-    const fetchResponse = async () => {
-      setLoading(true);
-      try {
-        const resume_response = await chatSession.sendMessage(
-          Resume_extract_prompt(prompt2) // the prompt defind in the Prompts.js file .
-        );
-        setResponse(resume_response.response.text()); // response hook have the generated response from the gemini .
-      } catch (error) {
-        console.error("Error fetching response:", error);
-      }
-      setLoading(false);
-    };
-    fetchResponse();
-    console.log(response);
-  }, [prompt1, prompt2]);
+  /////////////////////////////////////////// testing /////////////////////////////////////////////////
 
-  useEffect(() => {
-    if (prompt2.trim() === "" || prompt1.trim() === "") {
-      window.alert("Please Give Resume and Jobdescription details first....");
-      setIsEmptyPrompt(true);
-      return;
-    }
-    handleFetchResponse();
-  }, [prompt1, prompt2, handleFetchResponse]);
-
-  // useEffect(() => {
-  //   if (prompt2.trim() === "" || prompt1.trim() === "") {
-  //     window.alert("Please Give Resume and Jobdescription details first....");
-  //     setIsEmptyPrompt(true);
-  //     return;
-  //   }
+  // const handleFetchResponse = useCallback(async () => {
+  //   // ... fetch response logic
   //   const fetchResponse = async () => {
   //     setLoading(true);
   //     try {
@@ -86,9 +57,41 @@ const Ats_score = () => {
   //     }
   //     setLoading(false);
   //   };
-
   //   fetchResponse();
+  // }, [prompt1, prompt2]);
+
+  // useEffect(() => {
+  //   if (prompt2.trim() === "" || prompt1.trim() === "") {
+  //     window.alert("Please Give Resume and Jobdescription details first....");
+  //     setIsEmptyPrompt(true);
+  //     return;
+  //   }
+  //   handleFetchResponse();
+  //   console.log(response);
   // }, []);
+
+  /////////////////////////////////////////// testing /////////////////////////////////////////////////
+  useEffect(() => {
+    if (prompt2.trim() === "" || prompt1.trim() === "") {
+      window.alert("Please Give Resume and Jobdescription details first....");
+      setIsEmptyPrompt(true);
+      return;
+    }
+    const fetchResponse = async () => {
+      setLoading(true);
+      try {
+        const resume_response = await chatSession.sendMessage(
+          Resume_extract_prompt(prompt2) // the prompt defind in the Prompts.js file .
+        );
+        setResponse(resume_response.response.text()); // response hook have the generated response from the gemini .
+      } catch (error) {
+        console.error("Error fetching response:", error);
+      }
+      setLoading(false);
+    };
+
+    fetchResponse();
+  }, []);
 
   // optional (for testing purpose) //
   // useEffect(() => {

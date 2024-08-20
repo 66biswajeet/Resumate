@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export const useResumeExtract = () => {
   const { prompt2, setPrompt2 } = useResumeContext();
-  const [selectedFile, setSelectedFile] = useState(null);
+  const { selectedFile, setSelectedFile } = useResumeContext();
 
   const extractText = async (event) => {
     const file = event.target.files[0];
