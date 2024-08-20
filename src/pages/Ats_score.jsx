@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import styled from "styled-components";
 
 // imported for linking other pages //
@@ -33,17 +33,16 @@ const Ats_score = () => {
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
   const [isEmptyPrompt, setIsEmptyPrompt] = useState(false);
+  const [analyzed, setAnalyzed] = useState(false);
+  const [lastAnalyzedInput, setLastAnalyzedInput] = useState("");
 
   const { prompt1 } = useJdContext();
   const { prompt2 } = useResumeContext(); // now this prompt2 is the same prompt2 as in the useResumeContext file have .
 
   // responssible for the gemini to take input and give response //
-  useEffect(() => {
-    if (prompt2.trim() === "" || prompt1.trim() === "") {
-      window.alert("Please Give Resume and Jobdescription details first....");
-      setIsEmptyPrompt(true);
-      return;
-    }
+
+  const handleFetchResponse = useCallback(async () => {
+    // ... fetch response logic
     const fetchResponse = async () => {
       setLoading(true);
       try {
@@ -56,9 +55,40 @@ const Ats_score = () => {
       }
       setLoading(false);
     };
-
     fetchResponse();
-  }, []);
+    console.log(response);
+  }, [prompt1, prompt2]);
+
+  useEffect(() => {
+    if (prompt2.trim() === "" || prompt1.trim() === "") {
+      window.alert("Please Give Resume and Jobdescription details first....");
+      setIsEmptyPrompt(true);
+      return;
+    }
+    handleFetchResponse();
+  }, [prompt1, prompt2, handleFetchResponse]);
+
+  // useEffect(() => {
+  //   if (prompt2.trim() === "" || prompt1.trim() === "") {
+  //     window.alert("Please Give Resume and Jobdescription details first....");
+  //     setIsEmptyPrompt(true);
+  //     return;
+  //   }
+  //   const fetchResponse = async () => {
+  //     setLoading(true);
+  //     try {
+  //       const resume_response = await chatSession.sendMessage(
+  //         Resume_extract_prompt(prompt2) // the prompt defind in the Prompts.js file .
+  //       );
+  //       setResponse(resume_response.response.text()); // response hook have the generated response from the gemini .
+  //     } catch (error) {
+  //       console.error("Error fetching response:", error);
+  //     }
+  //     setLoading(false);
+  //   };
+
+  //   fetchResponse();
+  // }, []);
 
   // optional (for testing purpose) //
   // useEffect(() => {
