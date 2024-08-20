@@ -80,16 +80,15 @@ const Ats_meter = () => {
     const fetchResponse = async () => {
       setLoading(true);
       try {
-        const jd_response = await chatSession.sendMessage(
-          JdPrompt(prompt1, prompt2)
-        );
-
         if (oldprompt1 === prompt1 && oldprompt2 === prompt2) {
           console.log("if cond applied");
           setResponse(prvResponse);
           console.log(prvResponse.length);
         } else {
           console.log("else cond applied");
+          const jd_response = await chatSession.sendMessage(
+            JdPrompt(prompt1, prompt2)
+          );
           const newResponse = jd_response.response.text();
           setResponse(newResponse);
           setPrvResponse(newResponse); // Store the new response
