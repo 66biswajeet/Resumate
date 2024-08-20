@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 
 import { motion, AnimatePresence } from "framer-motion";
 
+import bg_sec2 from "../assets/ats_bg_sec2.jpg";
+
 // use here for file name to show on the popup //
 import { useResumeExtract } from "../systems/useResumeExtract";
 import { useJdContext } from "../systems/JdContext";
@@ -217,6 +219,10 @@ const Icon = styled.span`
 const MainContent = styled.div`
   display: flex;
   flex-direction: column;
+  background-image: url(${bg_sec2});
+
+  background-size: cover;
+  background-repeat: no-repeat;
 
   margin-left: 200px;
   margin-right: auto;
@@ -388,7 +394,7 @@ const UploadButton = styled(Button)`
   }
 
   @media (max-width: 768px) {
-    margin-left: 0px;
+    margin-left: 20px;
   }
 `;
 

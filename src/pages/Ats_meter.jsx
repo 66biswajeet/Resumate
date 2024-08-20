@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import GaugeMeter from "../components/GaugeMeter";
 import styled from "styled-components";
 import { chatSession } from "../gen-ai/Gemini";
@@ -69,7 +69,8 @@ const Ats_meter = () => {
   const { prompt1 } = useJdContext();
   const { prompt2 } = useResumeContext();
 
-  useEffect(() => {
+  const handleFetchResponse = useCallback(async () => {
+    // ... fetch response logic
     const fetchResponse = async () => {
       setLoading(true);
       try {
@@ -84,12 +85,31 @@ const Ats_meter = () => {
     };
 
     fetchResponse();
-  }, []);
+    console.log(response);
+  }, [prompt1, prompt2]);
+
+  useEffect(() => {
+    handleFetchResponse();
+  }, [prompt1, prompt2, handleFetchResponse]);
+
+  // useEffect(() => {
+  //   const fetchResponse = async () => {
+  //     setLoading(true);
+  //     try {
+  //       const jd_response = await chatSession.sendMessage(
+  //         JdPrompt(prompt1, prompt2) // the prompt defind in the Prompts.js file .
+  //       );
+  //       setResponse(jd_response.response.text()); // response hook have the generated response from the gemini .
+  //     } catch (error) {
+  //       console.error("Error fetching response:", error);
+  //     }
+  //     setLoading(false);
+  //   };
+
+  //   fetchResponse();
+  // }, []);
 
   // optional (for testing purpose) //
-  useEffect(() => {
-    console.log(response);
-  }, [response]);
 
   return (
     <Container>
