@@ -4,9 +4,12 @@ const ResumeContext = createContext();
 
 export const ResumeProvider = ({ children }) => {
   const [prompt2, setPrompt2] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
 
   return (
-    <ResumeContext.Provider value={{ prompt2, setPrompt2 }}>
+    <ResumeContext.Provider
+      value={{ prompt2, setPrompt2, selectedFile, setSelectedFile }}
+    >
       {children}
     </ResumeContext.Provider>
   );

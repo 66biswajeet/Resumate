@@ -144,6 +144,7 @@ const Ats_resume = () => {
                   onChange={extractText}
                 />
                 {selectedFile && <p> {selectedFile.name}</p>} 
+                {console.log(selectedFile)}
               </UploadArea>
               <ModalFooter>
                 <CancelButton onClick={() => setIsUploadOpen(false)}>
