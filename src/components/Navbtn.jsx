@@ -8,7 +8,9 @@ const ButtonContainer = styled.div`
   max-width: 400px;
   margin: 20px auto;
   padding: 20px;
-  border: 2px solid #333;
+  /* border: 2px solid #333;
+   */
+  border: none;
   border-radius: 15px;
   background: #f5f5f5;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -17,7 +19,7 @@ const ButtonContainer = styled.div`
   @media (max-width: 768px) {
     max-width: 90%;
   }
-
+  /* 
   &::before,
   &::after {
     content: "";
@@ -26,8 +28,8 @@ const ButtonContainer = styled.div`
     height: 30px;
     border: 2px solid #333;
     border-radius: 50%;
-  }
-
+  } */
+  /* 
   &::before {
     top: -15px;
     left: -15px;
@@ -38,7 +40,7 @@ const ButtonContainer = styled.div`
     bottom: -15px;
     right: -15px;
     border-color: transparent #333 #333 transparent;
-  }
+  } */
 `;
 
 const InstructionText = styled.p`
@@ -75,7 +77,7 @@ const Button = styled.button`
     border-radius: inherit;
     background: ${({ gradient }) =>
       gradient ||
-      "linear-gradient(82.3deg, rgba(150, 93, 233, 1) 10.8%, rgba(99, 88, 238, 1) 94.3%)"};
+      "linear-gradient(82.3deg, var(--primary-color) 10.8%, var(--third-color) 94.3%)"};
     transition: all 0.475s;
   }
 
@@ -146,7 +148,7 @@ const Navbtn = ({ text, textColor, bgColor, gradient, onClick }) => {
           {text}
         </ButtonContent>
       </Button>
-      <DoodleEffect />
+      {/* <DoodleEffect /> */}
     </ButtonContainer>
   );
 };

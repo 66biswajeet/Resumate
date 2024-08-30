@@ -57,7 +57,7 @@ const MenuItems = styled(motion.div)`
   }
 `;
 
-const MenuItem = styled.a`
+const MenuItem = styled(motion.a)`
   text-decoration: none;
   color: ${({ active }) => (active ? "var(--primary-color)" : "black")};
   margin-left: 2rem;
@@ -72,17 +72,22 @@ const MenuItem = styled.a`
     background: linear-gradient(
       to right,
       var(--primary-color) 0%,
-      var(--primary-color) 33.33%,
-      var(--third-color) 33.33%,
-      var(--third-color) 66.66%,
-      var(--fifth-color) 66.66%,
+      var(--primary-color) 20%,
+      var(--third-color) 40%,
+      var(--third-color) 60%,
+      var(--fifth-color) 80%,
       var(--fifth-color) 100%
     );
     position: absolute;
-    display: ${({ active }) => (active ? "block" : "none")};
-
+    display: block;
     width: ${({ active }) => (active ? "100%" : "0%")};
+
     border-radius: 2px;
+    transition: all 0.5s;
+  }
+  &:hover::after {
+    width: 100%;
+    display: block;
   }
 
   @media (max-width: 1200px) {
@@ -210,7 +215,7 @@ const Navbar = () => {
         <Logo src={LogoImage} alt="ResumePro Logo" />
       </LogoDiv>
       <MenuItems>
-        <MenuItem as={Link} to="/" active={isActive("/")}>
+        <MenuItem as={Link} to="/" active={isActive("/")} isOpen={isMenuOpen}>
           Home
         </MenuItem>
         <MenuItem
@@ -236,8 +241,13 @@ const Navbar = () => {
         </MenuItem>
 
         <MenuBtn>
-          <Button href="#">Sign in</Button>
-          <Button>Log IN</Button>
+          <Button
+            as={motion.button}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Log IN
+          </Button>
         </MenuBtn>
       </MenuItems>
       <HamburgerButton onClick={toggleMenu}>
@@ -281,7 +291,6 @@ const Navbar = () => {
             </MenuItem>
 
             <MenuBtn>
-              <Button href="#">Sign in</Button>
               <Button>Log IN</Button>
             </MenuBtn>
           </MenuItems>

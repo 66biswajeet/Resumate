@@ -258,11 +258,11 @@ const Title = styled.h1`
     background: linear-gradient(
       to right,
       var(--primary-color) 0%,
-      var(--primary-color) 33.33%,
-      var(--third-color) 33.33%,
-      var(--third-color) 66.66%,
-      var(--fifth-color) 66.66%,
-      var(--fifth-color) 100%
+      var(--primary-color) 25%,
+      var(--secondary-color) 50%,
+      var(--third-color) 75%,
+
+      var(--fourth-color) 100%
     );
     height: 4px;
     background-color: var(--secondary-color);

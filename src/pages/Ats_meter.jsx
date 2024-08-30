@@ -83,13 +83,26 @@ const Ats_meter = () => {
         if (oldprompt1 === prompt1 && oldprompt2 === prompt2) {
           console.log("if cond applied");
           setResponse(prvResponse);
-          console.log(prvResponse.length);
         } else {
           console.log("else cond applied");
-          const jd_response = await chatSession.sendMessage(
-            JdPrompt(prompt1, prompt2)
+          const responses = [];
+
+          for (let i = 0; i < 3; i++) {
+            const jd_response = await chatSession.sendMessage(
+              JdPrompt(prompt1, prompt2)
+            );
+            responses.push(jd_response);
+            console.log(jd_response.response.text());
+          }
+
+          const thirdResponse = Math.min(
+            responses[2].response.text(),
+            responses[1].response.text(),
+            responses[0].response.text()
           );
-          const newResponse = jd_response.response.text();
+
+          const newResponse = thirdResponse;
+
           setResponse(newResponse);
           setPrvResponse(newResponse); // Store the new response
           setOldprompt1(prompt1);

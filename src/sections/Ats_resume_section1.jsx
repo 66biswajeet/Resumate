@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import ats from "../assets/ats.png";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Section = styled.section`
   display: flex;
@@ -7,14 +9,22 @@ const Section = styled.section`
   justify-content: center;
   align-items: center;
   padding: 2rem;
-  /* background-color: var(--primary-color); */
-  background-image: url("https://media.istockphoto.com/id/1198272365/photo/colorful-wavy-object.webp?s=2048x2048&w=is&k=20&c=Ca-s6BK4WXLw0YadRevbKkjJU4-vhIVx9m3Rd-ZhVsw=");
+  background-color: var(--primary-color);
+  /* background: linear-gradient(
+    to right,
+    var(--secondary-color) 0%,
+    var(--secondary-color) 60%,
+    var(--primary-color) 60%,
+    var(--primary-color) 100%
+  ); */
+  /* background-image: url("https://media.istockphoto.com/id/1198272365/photo/colorful-wavy-object.webp?s=2048x2048&w=is&k=20&c=Ca-s6BK4WXLw0YadRevbKkjJU4-vhIVx9m3Rd-ZhVsw="); */
 
   background-size: cover;
   color: white;
   width: 98%;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  border-radius: 10px;
 
   @media (min-width: 768px) {
     flex-direction: row;
@@ -61,15 +71,17 @@ const ScanButton = styled.button`
 
 const IllustrationContainer = styled.div`
   position: relative;
-  width: 250px;
-  height: 250px;
+
   display: none;
 
   @media (min-width: 1200px) {
-    width: 300px;
+    width: 500px;
     height: 300px;
     display: block;
-    opacity: 0;
+    background-image: url(${ats});
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
   }
 `;
 
@@ -200,13 +212,20 @@ const AtsResumeSection1 = ({ href }) => {
     <Section>
       <Content>
         <Heading>Find Out Your Resume Score In Seconds</Heading>
-        <ScanButton onClick={handleButtonClick}>Scan Your Resume</ScanButton>
+        <ScanButton
+          onClick={handleButtonClick}
+          as={motion.button}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          Scan Your Resume
+        </ScanButton>
       </Content>
       <IllustrationContainer>
-        <Mountain />
+        {/* <Mountain />
         <Person />
         <Sun />
-        <Cloud />
+        <Cloud /> */}
       </IllustrationContainer>
     </Section>
   );
