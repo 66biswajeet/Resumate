@@ -33,8 +33,7 @@ const Ats_score = () => {
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
   const [isEmptyPrompt, setIsEmptyPrompt] = useState(false);
-  const [analyzed, setAnalyzed] = useState(false);
-  const [lastAnalyzedInput, setLastAnalyzedInput] = useState("");
+  
 
   const { prompt1 } = useJdContext();
   const { prompt2 } = useResumeContext(); // now this prompt2 is the same prompt2 as in the useResumeContext file have .
@@ -42,33 +41,37 @@ const Ats_score = () => {
   // responssible for the gemini to take input and give response //
 
   /////////////////////////////////////////// testing /////////////////////////////////////////////////
+// const handleFetchResponse = useCallback(async () => {
+//   const fetchResponse = async () => {
+//     setLoading(true);
+//     try {
+//       if (oldprompt1 === prompt1 && oldprompt2 === prompt2) {
+//         console.log("if cond applied");
+//         setResponse(prvResponse);
+//         console.log(prvResponse.length);
+//       } else {
+//         console.log("else cond applied");
+//         const jd_response = await chatSession.sendMessage(
+//           JdPrompt(prompt1, prompt2)
+//         );
+//         const newResponse = jd_response.response.text();
+//         setResponse(newResponse);
+//         setPrvResponse(newResponse); // Store the new response
+//         setOldprompt1(prompt1);
+//         setOldprompt2(prompt2);
+//       }
+//     } catch (error) {
+//       console.error("Error fetching response:", error);
+//     }
+//     setLoading(false);
+//   };
 
-  // const handleFetchResponse = useCallback(async () => {
-  //   // ... fetch response logic
-  //   const fetchResponse = async () => {
-  //     setLoading(true);
-  //     try {
-  //       const resume_response = await chatSession.sendMessage(
-  //         Resume_extract_prompt(prompt2) // the prompt defind in the Prompts.js file .
-  //       );
-  //       setResponse(resume_response.response.text()); // response hook have the generated response from the gemini .
-  //     } catch (error) {
-  //       console.error("Error fetching response:", error);
-  //     }
-  //     setLoading(false);
-  //   };
-  //   fetchResponse();
-  // }, [prompt1, prompt2]);
+//   fetchResponse();
+// }, [prompt1, prompt2]);
 
-  // useEffect(() => {
-  //   if (prompt2.trim() === "" || prompt1.trim() === "") {
-  //     window.alert("Please Give Resume and Jobdescription details first....");
-  //     setIsEmptyPrompt(true);
-  //     return;
-  //   }
-  //   handleFetchResponse();
-  //   console.log(response);
-  // }, []);
+// useEffect(() => {
+//   handleFetchResponse();
+// }, []);
 
   /////////////////////////////////////////// testing /////////////////////////////////////////////////
   useEffect(() => {

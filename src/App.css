@@ -6,7 +6,7 @@
 } */
 
 ::-webkit-scrollbar {
-  width: 0.5rem;
+  width: 0rem;
 }
 
 ::-webkit-scrollbar-track {
@@ -14,7 +14,15 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--primary-color);
+  background: linear-gradient(
+    to bottom,
+    var(--primary-color) 0%,
+    var(--primary-color) 20%,
+    var(--secondary-color) 40%,
+    var(--secondary-color) 60%,
+    var(--third-color) 80%,
+    var(--third-color) 100%
+  );
   border: 2px solid black;
   border-radius: 10px;
   background-clip: content-box;
