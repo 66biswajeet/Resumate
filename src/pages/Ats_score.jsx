@@ -27,13 +27,13 @@ import { IoMdSettings } from "react-icons/io";
 import Spinner from "../components/Spinner";
 
 import Ats_meter from "./Ats_meter";
+import Footer from "../sections/Footer";
 
 const Ats_score = () => {
   const [activePage, setActivePage] = useState("Score");
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
   const [isEmptyPrompt, setIsEmptyPrompt] = useState(false);
-  
 
   const { prompt1 } = useJdContext();
   const { prompt2 } = useResumeContext(); // now this prompt2 is the same prompt2 as in the useResumeContext file have .
@@ -41,37 +41,37 @@ const Ats_score = () => {
   // responssible for the gemini to take input and give response //
 
   /////////////////////////////////////////// testing /////////////////////////////////////////////////
-// const handleFetchResponse = useCallback(async () => {
-//   const fetchResponse = async () => {
-//     setLoading(true);
-//     try {
-//       if (oldprompt1 === prompt1 && oldprompt2 === prompt2) {
-//         console.log("if cond applied");
-//         setResponse(prvResponse);
-//         console.log(prvResponse.length);
-//       } else {
-//         console.log("else cond applied");
-//         const jd_response = await chatSession.sendMessage(
-//           JdPrompt(prompt1, prompt2)
-//         );
-//         const newResponse = jd_response.response.text();
-//         setResponse(newResponse);
-//         setPrvResponse(newResponse); // Store the new response
-//         setOldprompt1(prompt1);
-//         setOldprompt2(prompt2);
-//       }
-//     } catch (error) {
-//       console.error("Error fetching response:", error);
-//     }
-//     setLoading(false);
-//   };
+  // const handleFetchResponse = useCallback(async () => {
+  //   const fetchResponse = async () => {
+  //     setLoading(true);
+  //     try {
+  //       if (oldprompt1 === prompt1 && oldprompt2 === prompt2) {
+  //         console.log("if cond applied");
+  //         setResponse(prvResponse);
+  //         console.log(prvResponse.length);
+  //       } else {
+  //         console.log("else cond applied");
+  //         const jd_response = await chatSession.sendMessage(
+  //           JdPrompt(prompt1, prompt2)
+  //         );
+  //         const newResponse = jd_response.response.text();
+  //         setResponse(newResponse);
+  //         setPrvResponse(newResponse); // Store the new response
+  //         setOldprompt1(prompt1);
+  //         setOldprompt2(prompt2);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching response:", error);
+  //     }
+  //     setLoading(false);
+  //   };
 
-//   fetchResponse();
-// }, [prompt1, prompt2]);
+  //   fetchResponse();
+  // }, [prompt1, prompt2]);
 
-// useEffect(() => {
-//   handleFetchResponse();
-// }, []);
+  // useEffect(() => {
+  //   handleFetchResponse();
+  // }, []);
 
   /////////////////////////////////////////// testing /////////////////////////////////////////////////
   useEffect(() => {
@@ -109,69 +109,71 @@ const Ats_score = () => {
   // everything inside the return statement will be render as HTML //
 
   return (
-    <Container>
-      <Sidebar>
-        <Link to={"/ats/resume"} style={{ textDecoration: "none" }}>
+    <>
+      <Container>
+        <Sidebar>
+          <Link to={"/ats/resume"} style={{ textDecoration: "none" }}>
+            <SidebarItem
+              active={activePage === "Resume"}
+              onClick={() => setActivePage("Resume")}
+            >
+              <Icon>
+                <IoDocumentTextSharp />
+              </Icon>
+              Resume
+            </SidebarItem>
+          </Link>
+          <Link to={"/ats/score"} style={{ textDecoration: "none" }}>
+            <SidebarItem
+              active={activePage === "Score"}
+              onClick={() => setActivePage("Score")}
+            >
+              <Icon>
+                <IoBarChart />
+              </Icon>
+              Score
+            </SidebarItem>
+          </Link>
           <SidebarItem
-            active={activePage === "Resume"}
-            onClick={() => setActivePage("Resume")}
+            active={activePage === "Settings"}
+            onClick={() => setActivePage("Settings")}
           >
             <Icon>
-              <IoDocumentTextSharp />
+              <IoMdSettings />
             </Icon>
-            Resume
+            Settings
           </SidebarItem>
-        </Link>
-        <Link to={"/ats/score"} style={{ textDecoration: "none" }}>
-          <SidebarItem
-            href="/ats/score"
-            active={activePage === "Score"}
-            onClick={() => setActivePage("Score")}
-          >
-            <Icon>
-              <IoBarChart />
-            </Icon>
-            Score
-          </SidebarItem>
-        </Link>
-        <SidebarItem
-          active={activePage === "Settings"}
-          onClick={() => setActivePage("Settings")}
-        >
-          <Icon>
-            <IoMdSettings />
-          </Icon>
-          Settings
-        </SidebarItem>
-      </Sidebar>
+        </Sidebar>
 
-      {isEmptyPrompt ? (
-        <Navigate to="/ats/resume" />
-      ) : (
-        <MainContent>
-          {loading ? (
-            <>
-              <Spinner color="var(--primary-color)" />
-            </>
-          ) : (
-            <>
-              <Ats_meter />
-              <ContentLayout>
-                {response && (
-                  <ResumeLayout>
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: formatResponse(response),
-                      }}
-                    />
-                  </ResumeLayout>
-                )}
-              </ContentLayout>
-            </>
-          )}
-        </MainContent>
-      )}
-    </Container>
+        {isEmptyPrompt ? (
+          <Navigate to="/ats/resume" />
+        ) : (
+          <MainContent>
+            {loading ? (
+              <>
+                <Spinner color="var(--primary-color)" />
+              </>
+            ) : (
+              <>
+                <Ats_meter />
+                <ContentLayout>
+                  {response && (
+                    <ResumeLayout>
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: formatResponse(response),
+                        }}
+                      />
+                    </ResumeLayout>
+                  )}
+                </ContentLayout>
+              </>
+            )}
+          </MainContent>
+        )}
+      </Container>
+      <Footer />
+    </>
   );
 };
 
@@ -200,7 +202,7 @@ const Sidebar = styled.div`
   margin-top: 50px;
   position: fixed;
   left: 18px;
-  z-index: 100;
+  z-index: 0;
 
   @media (max-width: 1200px) {
     flex-direction: row;

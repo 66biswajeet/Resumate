@@ -23,6 +23,7 @@ import { IoDocumentTextSharp } from "react-icons/io5";
 import { IoBarChart } from "react-icons/io5";
 import { IoMdSettings } from "react-icons/io";
 import { FaBriefcase, FaFileUpload } from "react-icons/fa";
+import Footer from "../sections/Footer";
 
 const Ats_resume = () => {
   const [isUploadOpen, setIsUploadOpen] = useState(false);
@@ -51,111 +52,115 @@ const Ats_resume = () => {
   }, [prompt1, selectedFile]);
 
   return (
-    <Container>
-      <Sidebar>
-        <Link to={"/ats/resume"} style={{ textDecoration: "none" }}>
+    <>
+      <Container>
+        <Sidebar>
+          <Link to={"/ats/resume"} style={{ textDecoration: "none" }}>
+            <SidebarItem
+              active={activePage === "Resume"}
+              onClick={() => setActivePage("Resume")}
+            >
+              <Icon>
+                <IoDocumentTextSharp />
+              </Icon>
+              Resume
+            </SidebarItem>
+          </Link>
+          {/* <Link to={"/ats/score"} style={{ textDecoration: "none" }}> */}
           <SidebarItem
-            active={activePage === "Resume"}
-            onClick={() => setActivePage("Resume")}
-          >
-            <Icon>
-              <IoDocumentTextSharp />
-            </Icon>
-            Resume
-          </SidebarItem>
-        </Link>
-        <Link to={"/ats/score"} style={{ textDecoration: "none" }}>
-          <SidebarItem
-            href="/ats/score"
             active={activePage === "Score"}
             onClick={() => setActivePage("Score")}
+            as={Link}
+            to={"/ats/score"}
           >
             <Icon>
               <IoBarChart />
             </Icon>
             Score
           </SidebarItem>
-        </Link>
-        <Link to={"/ats/meter"} style={{ textDecoration: "none" }}>
-          <SidebarItem
-            active={activePage === "Settings"}
-            onClick={() => setActivePage("Settings")}
-          >
-            <Icon>
-              <IoMdSettings />
-            </Icon>
-            Settings
-          </SidebarItem>
-        </Link>
-      </Sidebar>
-      <MainContent>
-        <AtsResumeSection1 />
-        <Title>Applicant Tracking System</Title>
-        <Subtitle>
-          Are you not getting enough interview calls? Check your Resume's ATS
-          compatibility & get your GAP Report in just 3 minutes. This is your
-          chance to get 2X more interview calls.
-        </Subtitle>
+          {/* </Link> */}
+          <Link to={"/ats/meter"} style={{ textDecoration: "none" }}>
+            <SidebarItem
+              active={activePage === "Settings"}
+              onClick={() => setActivePage("Settings")}
+            >
+              <Icon>
+                <IoMdSettings />
+              </Icon>
+              Settings
+            </SidebarItem>
+          </Link>
+        </Sidebar>
+        <MainContent>
+          <AtsResumeSection1 />
+          <Title>Applicant Tracking System</Title>
+          <Subtitle>
+            Are you not getting enough interview calls? Check your Resume's ATS
+            compatibility & get your GAP Report in just 3 minutes. This is your
+            chance to get 2X more interview calls.
+          </Subtitle>
 
-        <Ats_resume_progres currentStep={currentStep} />
+          <Ats_resume_progres currentStep={currentStep} />
 
-        <JobDescription
-          value={prompt1}
-          onChange={(e) => setPrompt1(e.target.value)}
-        />
+          <JobDescription
+            value={prompt1}
+            onChange={(e) => setPrompt1(e.target.value)}
+          />
 
-        <div id="subtitle" onClick={handleUploadClick}>
-          <Navbtn text={"Upload Resume"}> </Navbtn>
-        </div>
-        <Link to={"/ats/score"}>
-          <UploadButton
-            as={motion.button}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Check ATS Score
-          </UploadButton>
-        </Link>
+          <div id="subtitle" onClick={handleUploadClick}>
+            <Navbtn text={"Upload Resume"}> </Navbtn>
+          </div>
+          <Link to={"/ats/score"}>
+            <UploadButton
+              as={motion.button}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Check ATS Score
+            </UploadButton>
+          </Link>
 
-        {isUploadOpen && (
-          <UploadModal
-            as={motion.div}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <ModalContent>
-              <ModalHeader>
-                <h2>Upload Resume</h2>
-                <CloseButton onClick={() => setIsUploadOpen(false)}>
-                  ×
-                </CloseButton>
-              </ModalHeader>
-              <UploadArea>
-                <UploadIcon>⬆️</UploadIcon>
-                <p>Drop files here</p>
-                <SupportedFormats>Supported format: Pdf </SupportedFormats>
-                <OrDivider>OR</OrDivider>
-                <BrowseButton htmlFor="fileInput">Browse</BrowseButton>
-                <input
-                  type="file"
-                  id="fileInput"
-                  style={{ display: "none" }}
-                  onChange={extractText}
-                />
-                {selectedFile && <p> {selectedFile.name}</p>} 
-                {console.log(selectedFile)}
-              </UploadArea>
-              <ModalFooter>
-                <CancelButton onClick={() => setIsUploadOpen(false)}>
-                  Upload
-                </CancelButton>
-              </ModalFooter>
-            </ModalContent>
-          </UploadModal>
-        )}
-      </MainContent>
-    </Container>
+          {isUploadOpen && (
+            <UploadModal
+              as={motion.div}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <ModalContent>
+                <ModalHeader>
+                  <h2>Upload Resume</h2>
+                  <CloseButton onClick={() => setIsUploadOpen(false)}>
+                    ×
+                  </CloseButton>
+                </ModalHeader>
+                <UploadArea>
+                  <UploadIcon>⬆️</UploadIcon>
+                  <p>Drop files here</p>
+                  <SupportedFormats>Supported format: Pdf </SupportedFormats>
+                  <OrDivider>OR</OrDivider>
+                  <BrowseButton htmlFor="fileInput">Browse</BrowseButton>
+                  <input
+                    type="file"
+                    id="fileInput"
+                    style={{ display: "none" }}
+                    onChange={extractText}
+                  />
+                  {selectedFile && <p> {selectedFile.name}</p>} 
+                  {console.log(selectedFile)}
+                </UploadArea>
+                <ModalFooter>
+                  <CancelButton onClick={() => setIsUploadOpen(false)}>
+                    Upload
+                  </CancelButton>
+                </ModalFooter>
+              </ModalContent>
+            </UploadModal>
+          )}
+        </MainContent>
+      </Container>
+      <Footer />
+    </>
   );
 };
 
@@ -182,7 +187,6 @@ const Sidebar = styled.div`
   margin-top: 50px;
   position: fixed;
   left: 18px;
-  z-index: 100;
 
   @media (max-width: 1200px) {
     flex-direction: row;
@@ -190,6 +194,7 @@ const Sidebar = styled.div`
     width: 100%;
     justify-content: center;
     left: 0px;
+    z-index: 10;
   }
 `;
 
@@ -204,6 +209,7 @@ const SidebarItem = styled.div`
   border-radius: 5px;
   color: var(--primary-color);
   text-decoration: none;
+
   @media (max-width: 768px) {
     justify-content: center;
   }

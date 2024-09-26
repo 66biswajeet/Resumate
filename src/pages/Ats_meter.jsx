@@ -16,7 +16,7 @@ const Container = styled.div`
   /* width: 80%; */
   margin-top: 70px;
   background-color: white;
-  z-index: 250;
+  z-index: -1;
   right: 70px;
 
   @media (max-width: 1200px) {
