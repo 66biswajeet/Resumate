@@ -4,9 +4,12 @@ import styled from "styled-components";
 import LogoImage from "../assets/logo3.png";
 import { HiMenuAlt1 } from "react-icons/hi";
 
+import { auth, provider } from "../../firebase";
+import { signInWithPopup, signOut } from "firebase/auth";
 import { Link, useLocation } from "react-router-dom";
 
 import { motion, AnimatePresence } from "framer-motion";
+import { UserButton, useUser } from "@clerk/clerk-react";
 
 const Nav = styled.nav`
   display: flex;
@@ -158,6 +161,18 @@ const Navbar = () => {
     return location.pathname === paths;
   };
 
+  const loginClick = () => {
+    signInWithPopup(auth, provider).then((data) => {
+      // setValue(data.user.email);
+      console.log(data);
+      // history("/home");
+      alert("WELCOME TO THE DISNEY+ WORLD ");
+      // localStorage.setItem("email", data.user.email);
+    });
+  };
+
+  const { isLoaded, isSignedIn } = useUser();
+
   return (
     // <Nav>
     //   <LogoDiv>
@@ -241,13 +256,19 @@ const Navbar = () => {
         </MenuItem>
 
         <MenuBtn>
-          <Button
-            as={motion.button}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Log IN
-          </Button>
+          {!isSignedIn ? (
+            <Link to={"/auth/login"}>
+              <Button
+                as={motion.button}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Log IN
+              </Button>
+            </Link>
+          ) : (
+            <UserButton />
+          )}
         </MenuBtn>
       </MenuItems>
       <HamburgerButton onClick={toggleMenu}>
@@ -291,7 +312,7 @@ const Navbar = () => {
             </MenuItem>
 
             <MenuBtn>
-              <Button>Log IN</Button>
+              <Button onClick={loginClick}>Log IN</Button>
             </MenuBtn>
           </MenuItems>
         )}
